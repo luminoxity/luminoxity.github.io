@@ -48,12 +48,18 @@
             overflow: hidden;
             position: relative;
             border-bottom: 2px solid #3498db;
+            height: 40px;
+            display: flex;
+            align-items: center;
+        }
         }
 
         .news-content {
-            position: absolute;
             white-space: nowrap;
             animation: scrollNews 20s linear infinite;
+            position: absolute;
+            width: 100%;
+            text-align: center;
         }
 
         @keyframes scrollNews {
@@ -299,7 +305,7 @@
     <div class="container">
         <div class="news-banner">
             <div class="news-content">
-                <i class="fas fa-bullhorn"></i> Welcome to our Minecraft Server! Latest updates: New survival world, Creative plots available, Join our Discord community for special events!
+                <i class="fas fa-bullhorn"></i> Welcome to our Minecraft Server! Latest updates: New survival world, Creative plots available, Join our Discord community for special events! <i class="fas fa-gamepad"></i> Server reset coming next month! <i class="fas fa-gem"></i> Vote for special rewards!
             </div>
         </div>
         
