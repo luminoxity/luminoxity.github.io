@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R67U Minecraft Server</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #1e1e1e;
+            color: white;
+        }
+        .server-info {
+            margin-top: 50px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #333;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to R67U Minecraft Server</h1>
+    <div class="server-info">
+        <p><strong>Server IP:</strong> mc.r67u.com</p>
+        <p><strong>Status:</strong> <span id="status">Loading...</span></p>
+        <p><strong>Players Online:</strong> <span id="player-count">Loading...</span></p>
+        <p><strong>Version:</strong> <span id="version">Loading...</span></p>
+    </div>
+
+    <script>
+        async function updateServerInfo() {
+            try {
+                let response = await fetch("https://api.mcsrvstat.us/2/mc.r67u.com");
+                let data = await response.json();
+
+                if (data.online) {
+                    document.getElementById("status").innerText = "Online ✅";
+                    document.getElementById("player-count").innerText = `${data.players.online} / ${data.players.max}`;
+                    document.getElementById("version").innerText = data.version;
+                } else {
+                    document.getElementById("status").innerText = "Offline ❌";
+                    document.getElementById("player-count").innerText = "N/A";
+                    document.getElementById("version").innerText = "N/A";
+                }
+            } catch (error) {
+                document.getElementById("status").innerText = "Error ❌";
+                document.getElementById("player-count").innerText = "N/A";
+                document.getElementById("version").innerText = "N/A";
+            }
+        }
+
+        updateServerInfo();
+        setInterval(updateServerInfo, 30000); // Refresh every 30 seconds
+    </script>
+
+</body>
+</html>
