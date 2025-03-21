@@ -44,22 +44,25 @@
 
         .news-banner {
             background-color: rgba(52, 152, 219, 0.3);
-            padding: 10px 0;
+            padding: 0;
             overflow: hidden;
             position: relative;
             border-bottom: 2px solid #3498db;
-            height: 40px;
+            height: 50px;
             display: flex;
             align-items: center;
+            justify-content: center;
         }
         }
 
         .news-content {
             white-space: nowrap;
-            animation: scrollNews 20s linear infinite;
+            animation: scrollNews 25s linear infinite;
             position: absolute;
             width: 100%;
             text-align: center;
+            font-size: 18px;
+            letter-spacing: 0.5px;
         }
 
         @keyframes scrollNews {
@@ -73,7 +76,7 @@
 
         h1 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             color: #3498db;
             text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
             font-size: 2.5em;
@@ -90,7 +93,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         #status-indicator {
@@ -305,7 +308,8 @@
     <div class="container">
         <div class="news-banner">
             <div class="news-content">
-                <i class="fas fa-bullhorn"></i> Welcome to our Minecraft Server! Latest updates: New survival world, Creative plots available, Join our Discord community for special events! <i class="fas fa-gamepad"></i> Server reset coming next month! <i class="fas fa-gem"></i> Vote for special rewards!
+                <i class="fas fa-bullhorn" style="margin-right: 8px;"></i> Welcome to our Minecraft Server! Latest updates: New survival world, Creative plots available, Join our Discord community for special events! Server reset coming next month! Vote for special rewards!
+            </div>
             </div>
         </div>
         
