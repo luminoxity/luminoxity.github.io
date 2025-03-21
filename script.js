@@ -1,5 +1,5 @@
 // Server address - change this to your own server
-const SERVER_ADDRESS = 'play.r67u.com';
+const SERVER_ADDRESS = 'mc.r67u.com';
 const SERVER_PORT = 25565; // Default Minecraft port, change if needed
 
 // API URL for Minecraft server status (using mcapi.us service)
