@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My GitHub Pages Site</title>
+    <style>
+        /* CSS Reset & Base Styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: #34495e;
+            padding: 1rem 0;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+        
+        nav a:hover {
+            background-color: #46637f;
+        }
+        
+        /* Main content */
+        main {
+            padding: 3rem 0;
+        }
+        
+        section {
+            background-color: white;
+            border-radius: 5px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        /* Projects section */
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .project-card {
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            padding: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .project-card h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Contact form */
+        form {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        input, textarea {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+        }
+        
+        button {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #3d5672;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        .social-links {
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            color: white;
+            margin: 0 0.5rem;
+            text-decoration: none;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav a {
+                display: block;
+                margin: 0.5rem 0;
+            }
+            
+            .projects {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1>Your Name</h1>
+            <p>Web Developer | Designer | Creator</p>
+        </div>
+    </header>
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="container">
+        <!-- About Section -->
+        <section id="about">
+            <h2>About Me</h2>
+            <p>Hello! I'm a passionate developer based in [Your Location]. I love creating beautiful and functional websites that solve real problems. With a background in [Your Background], I bring a unique perspective to every project.</p>
+            <p>When I'm not coding, you can find me [Your Hobbies/Interests].</p>
+        </section>
+        
+        <!-- Projects Section -->
+        <section id="projects">
+            <h2>My Projects</h2>
+            <p>Here are some of the projects I've worked on recently:</p>
+            
+            <div class="projects">
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <h3>Project Name</h3>
+                    <p>Short description of the project and your role in it. What technologies did you use? What problems did you solve?</p>
+                    <a href="#">View Project →</a>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <h3>Project Name</h3>
+                    <p>Short description of the project and your role in it. What technologies did you use? What problems did you solve?</p>
+                    <a href="#">View Project →</a>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="project-card">
+                    <h3>Project Name</h3>
+                    <p>Short description of the project and your role in it. What technologies did you use? What problems did you solve?</p>
+                    <a href="#">View Project →</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Skills Section -->
+        <section id="skills">
+            <h2>Skills & Expertise</h2>
+            <p>I specialize in the following technologies and tools:</p>
+            
+            <div style="margin-top: 1rem;">
+                <h3>Programming Languages</h3>
+                <p>HTML, CSS, JavaScript, Python, etc.</p>
+                
+                <h3>Frameworks & Libraries</h3>
+                <p>React, Vue.js, Node.js, Express, etc.</p>
+                
+                <h3>Tools & Platforms</h3>
+                <p>Git, GitHub, VS Code, Figma, etc.</p>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact">
+            <h2>Get In Touch</h2>
+            <p>Interested in working together? Feel free to reach out through this form or connect with me on social media!</p>
+            
+            <form>
+                <div>
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div>
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2025 Your Name. All rights reserved.</p>
+            
+            <div class="social-links">
+                <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+                <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
+                <a href="https://twitter.com/yourusername" target="_blank">Twitter</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // You can add JavaScript functionality here
+        // For example, form submission handling or interactive elements
+        
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('This form submission would be processed on a real website. Thanks for testing!');
+            // In a real implementation, you would submit this data to a backend
+        });
+    </script>
+</body>
+</html>
