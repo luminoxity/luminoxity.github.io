@@ -216,8 +216,9 @@
             padding: 10px 20px;
             border-radius: 5px;
             border: 1px solid #3498db;
-            margin-top: 10px;
             transition: all 0.3s;
+            min-width: 180px;
+            justify-content: space-between;
         }
 
         .address-box:hover {
@@ -244,14 +245,12 @@
             transform: scale(1.2);
         }
 
-        /* New styles for the info icon and tooltip */
         /* Styles for the info icon and tooltip */
         .info-icon {
             position: relative;
             display: inline-block;
-            margin-left: 10px;
-            margin-right: 10px; /* Add spacing between the icon and the server IP */
             cursor: pointer;
+            color: #3498db;
         }
 
         .info-icon i {
@@ -294,12 +293,13 @@
             color: white;
             padding: 10px 20px;
             border-radius: 5px;
-            margin-top: 20px;
             text-decoration: none;
             transition: all 0.3s;
             font-weight: bold;
             border: none;
             cursor: pointer;
+            width: 180px;
+            text-align: center;
         }
 
         .discord-btn:hover {
@@ -389,8 +389,7 @@
 
             <div class="server-address">
                 <h3>Server Address</h3>
-                <div style="display: inline-flex; align-items: center;">
-                    <!-- Moved info-icon to the left of address-box -->
+                <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 15px;">
                     <div class="info-icon">
                         <i class="fas fa-info-circle"></i>
                         <span class="tooltip">You must be whitelisted to join the server.</span>
@@ -401,12 +400,13 @@
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
-                    <!-- Added info icon with tooltip -->
                 </div>
                 
-                <a href="https://discord.gg/BnTKpSNq" target="_blank" class="discord-btn">
-                    <i class="fab fa-discord"></i> Join our Discord
-                </a>
+                <div style="display: flex; justify-content: center; margin-top: 15px;">
+                    <a href="https://discord.gg/BnTKpSNq" target="_blank" class="discord-btn">
+                        <i class="fab fa-discord"></i> Join our Discord
+                    </a>
+                </div>
             </div>
             
             <footer>
