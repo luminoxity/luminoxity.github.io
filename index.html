@@ -1,508 +1,1058 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>r67u's Minecraft Server Stats</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-image: url('https://i.imgur.com/2UfoFLO.png');
-            background-color: #1e272e; /* Fallback color */
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1000px;
-            background-color: rgba(0, 0, 0, 0.8);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            border: 3px solid #3498db;
-            animation: borderGlow 3s infinite alternate;
-        }
-
-        @keyframes borderGlow {
-            from { box-shadow: 0 0 10px #3498db; }
-            to { box-shadow: 0 0 25px #3498db; }
-        }
-
-        .news-banner {
-            background-color: rgba(52, 152, 219, 0.3);
-            padding: 0;
-            overflow: hidden;
-            position: relative;
-            border-bottom: 2px solid #3498db;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        }
-
-        .news-content {
-            white-space: nowrap;
-            animation: scrollNews 25s linear infinite;
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            font-size: 18px;
-            letter-spacing: 0.5px;
-        }
-
-        @keyframes scrollNews {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        .server-info {
-            padding: 30px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
-            color: #3498db;
-            text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
-            font-size: 2.5em;
-            font-weight: bold;
-            animation: titlePulse 2s infinite alternate;
-        }
-
-        @keyframes titlePulse {
-            from { text-shadow: 0 0 10px rgba(52, 152, 219, 0.5); }
-            to { text-shadow: 0 0 20px rgba(52, 152, 219, 0.8), 0 0 30px rgba(52, 152, 219, 0.4); }
-        }
-
-        .status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        #status-indicator {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        .online {
-            background-color: #3498db;
-            box-shadow: 0 0 10px #3498db;
-            animation: pulseOnline 1.5s infinite alternate;
-        }
-
-        @keyframes pulseOnline {
-            from { box-shadow: 0 0 5px #3498db; }
-            to { box-shadow: 0 0 15px #3498db; }
-        }
-
-        .offline {
-            background-color: #ff5555;
-            box-shadow: 0 0 10px #ff5555;
-        }
-
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background-color: rgba(33, 33, 33, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            transition: all 0.3s;
-            border: 1px solid #444;
-            cursor: pointer;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.1);
-            transform: rotate(45deg);
-            transition: all 0.4s;
-            opacity: 0;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            background-color: rgba(44, 44, 44, 0.8);
-            border-color: #3498db;
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-        }
-
-        .stat-card:hover::before {
-            left: 100%;
-            opacity: 0.5;
-        }
-
-        .stat-card i {
-            font-size: 30px;
-            margin-right: 15px;
-            color: #3498db;
-            transition: transform 0.3s;
-        }
-
-        .stat-card:hover i {
-            transform: scale(1.2);
-        }
-
-        .stat-info h3 {
-            margin-bottom: 5px;
-            font-size: 16px;
-            color: #aaaaaa;
-        }
-
-        .stat-info p {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .player-list {
-            font-size: 14px !important;
-            font-weight: normal !important;
-            color: #bbbbbb;
-            max-height: 50px;
-            overflow-y: auto;
-        }
-
-        .server-address {
-            text-align: center;
-            margin-top: 30px;
-            padding: 20px;
-            background-color: rgba(33, 33, 33, 0.5);
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .server-address::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, transparent, rgba(52, 152, 219, 0.2), transparent);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { left: -150%; }
-            100% { left: 150%; }
-        }
-
-        .address-box {
-            background-color: rgba(33, 33, 33, 0.7);
-            display: inline-flex;
-            align-items: center;
-            padding: 10px 20px;
-            border-radius: 5px;
-            border: 1px solid #3498db;
-            margin-top: 10px;
-            transition: all 0.3s;
-        }
-
-        .address-box:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
-        }
-
-        #server-ip {
-            font-family: monospace;
-            font-size: 18px;
-            margin-right: 10px;
-        }
-
-        #copy-ip {
-            background: none;
-            border: none;
-            color: #aaaaaa;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        #copy-ip:hover {
-            color: #3498db;
-            transform: scale(1.2);
-        }
-
-        .discord-btn {
-            display: inline-block;
-            background-color: #5865F2;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            margin-top: 20px;
-            text-decoration: none;
-            transition: all 0.3s;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-        }
-
-        .discord-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.5);
-        }
-
-        .discord-btn i {
-            margin-right: 8px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 12px;
-            color: #aaaaaa;
-            border-top: 1px solid #444;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .stats-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .container {
-                width: 95%;
-                margin: 20px 0;
-            }
-            
-            body {
-                align-items: flex-start;
-                padding: 20px 0;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="news-banner">
-            <div class="news-content">
-                <i class="fas fa-bullhorn" style="margin-right: 8px;"></i> Welcome to our Minecraft Server! Latest updates: New survival world, Creative plots available, Join our Discord community for special events! Server reset coming next month! Vote for special rewards!
-            </div>
-            </div>
-        </div>
-        
-        <div class="server-info">
-            <h1>MINECRAFT SERVER</h1>
-            <div class="status">
-                <div id="status-indicator" class="offline"></div>
-                <span id="status-text">Checking status...</span>
-            </div>
-            
-            <div class="stats-container">
-                <div class="stat-card">
-                    <i class="fas fa-users"></i>
-                    <div class="stat-info">
-                        <h3>Players Online</h3>
-                        <p id="players-online">0</p>
-                        <p id="player-list" class="player-list"></p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <i class="fas fa-server"></i>
-                    <div class="stat-info">
-                        <h3>Server Version</h3>
-                        <p id="server-version">Loading...</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <i class="fas fa-clock"></i>
-                    <div class="stat-info">
-                        <h3>Uptime</h3>
-                        <p id="uptime">Loading...</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <i class="fas fa-wifi"></i>
-                    <div class="stat-info">
-                        <h3>MOTD</h3>
-                        <p id="motd">Loading...</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="server-address">
-                <h3>Server Address</h3>
-                <div class="address-box">
-                    <p id="server-ip">mc.r67u.com</p>
-                    <button id="copy-ip" onclick="copyIP()">
-                        <i class="fas fa-copy"></i>
-                    </button>
-                </div>
-                
-                <a href="https://discord.gg/BnTKpSNq" target="_blank" class="discord-btn">
-                    <i class="fab fa-discord"></i> Join our Discord
-                </a>
-            </div>
-            
-            <footer>
-                <p>© 2025 r67u Minecraft Server • Updated <span id="last-updated"></span></p>
-            </footer>
-        </div>
-    </div>
-    
-    <script>
-        // Server address - change this to your own server
-        const SERVER_ADDRESS = 'mc.r67u.com';
-        const SERVER_PORT = 25565; // Default Minecraft port, change if needed
-
-        // API URL for Minecraft server status (using mcapi.us service)
-        const API_URL = `https://mcapi.us/server/status?ip=${SERVER_ADDRESS}&port=${SERVER_PORT}`;
-
-        // Elements
-        const statusIndicator = document.getElementById('status-indicator');
-        const statusText = document.getElementById('status-text');
-        const playersOnline = document.getElementById('players-online');
-        const playerList = document.getElementById('player-list');
-        const serverVersion = document.getElementById('server-version');
-        const uptime = document.getElementById('uptime');
-        const motd = document.getElementById('motd');
-        const lastUpdated = document.getElementById('last-updated');
-
-        // Update the last updated date
-        const updateLastUpdated = () => {
-            const now = new Date();
-            lastUpdated.textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
-        };
-
-        // Function to fetch server stats
-        async function fetchServerStats() {
-            try {
-                const response = await fetch(API_URL);
-                const data = await response.json();
-                
-                // Update server status
-                if (data.online) {
-                    statusIndicator.className = 'online';
-                    statusText.textContent = 'Online';
-                    
-                    // Update players
-                    const playerCount = data.players.now;
-                    playersOnline.textContent = `${playerCount} / ${data.players.max}`;
-                    
-                    // Update player list if available
-                    if (data.players.sample && data.players.sample.length > 0) {
-                        const playerNames = data.players.sample.map(player => player.name).join(', ');
-                        playerList.textContent = `Online: ${playerNames}`;
-                    } else {
-                        playerList.textContent = playerCount > 0 ? 'Players online' : 'No players online';
-                    }
-                    
-                    // Update server version
-                    serverVersion.textContent = data.server.name;
-                    
-                    // Update MOTD (Message of the Day)
-                    if (data.motd) {
-                        motd.textContent = data.motd.replace(/§[0-9a-fk-or]/g, ''); // Remove Minecraft color codes
-                    }
-                    
-                    // Calculate and display uptime (This is not provided by the API, so it's just a placeholder)
-                    // For actual uptime, you would need your own backend service
-                    const now = new Date();
-                    const hours = now.getHours().toString().padStart(2, '0');
-                    const minutes = now.getMinutes().toString().padStart(2, '0');
-                    uptime.textContent = `Last checked: ${hours}:${minutes}`;
-
-                    // Update the last updated timestamp
-                    updateLastUpdated();
-                } else {
-                    setOfflineStatus();
-                }
-            } catch (error) {
-                console.error('Error fetching server stats:', error);
-                setOfflineStatus();
-            }
-        }
-
-        // Set offline status
-        function setOfflineStatus() {
-            statusIndicator.className = 'offline';
-            statusText.textContent = 'Offline';
-            playersOnline.textContent = '0 / 0';
-            playerList.textContent = 'Server is offline';
-            serverVersion.textContent = 'N/A';
-            uptime.textContent = 'N/A';
-            motd.textContent = 'Server is currently offline';
-            
-            // Update the last updated timestamp
-            updateLastUpdated();
-        }
-
-        // Function to copy server IP to clipboard
-        function copyIP() {
-            const serverIP = document.getElementById('server-ip').textContent;
-            
-            navigator.clipboard.writeText(serverIP)
-                .then(() => {
-                    // Add a temporary "Copied!" message
-                    const copyButton = document.getElementById('copy-ip');
-                    const originalContent = copyButton.innerHTML;
-                    copyButton.innerHTML = '<i class="fas fa-check"></i>';
-                    
-                    setTimeout(() => {
-                        copyButton.innerHTML = originalContent;
-                    }, 2000);
-                })
-                .catch(err => {
-                    console.error('Failed to copy IP address:', err);
-                });
-        }
-
-        // Make the copyIP function global so the onclick attribute works
-        window.copyIP = copyIP;
-
-        // Animation for the stat cards on hover
-        const statCards = document.querySelectorAll('.stat-card');
-        statCards.forEach(card => {
-            card.addEventListener('mouseover', () => {
-                card.style.transform = 'translateY(-5px)';
-            });
-            
-            card.addEventListener('mouseout', () => {
-                card.style.transform = 'translateY(0)';
-            });
-        });
-
-        // Fetch server stats when page loads
-        fetchServerStats();
-
-        // Refresh server stats every 5 minutes
-        setInterval(fetchServerStats, 5 * 60 * 1000);
-    </script>
-</body>
-</html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>the r67u website</title>
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+     <style>
+         * {
+             margin: 0;
+             padding: 0;
+             box-sizing: border-box;
+             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+         }
+ 
+         body {
+             background-color: #1e272e;
+             background-size: cover;
+             background-position: center;
+             background-attachment: fixed;
+             height: 100vh;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             color: white;
+         }
+ 
+         .container {
+             width: 90%;
+             max-width: 1000px;
+             background-color: rgba(0, 0, 0, 0.8);
+             border-radius: 15px;
+             overflow: hidden;
+             box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+             backdrop-filter: blur(5px);
+             border: 3px solid #3498db;
+             animation: borderGlow 3s infinite alternate;
+         }
+ 
+         @keyframes borderGlow {
+             from { box-shadow: 0 0 10px #3498db; }
+             to { box-shadow: 0 0 25px #3498db; }
+         }
+ 
+         .news-banner {
+             background-color: rgba(52, 152, 219, 0.3);
+             padding: 10px 0;
+             border-bottom: 2px solid #3498db;
+             height: 40px;
+             display: flex;
+             align-items: center;
+         }
+ 
+         .news-banner marquee {
+             width: 100%;
+             white-space: nowrap;
+             color: white;
+             font-size: 16px;
+         }
+ 
+         .server-info {
+             padding: 30px;
+         }
+ 
+         h1 {
+             text-align: center;
+             margin-bottom: 20px;
+             color: #3498db;
+             text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+             font-size: 2.5em;
+             font-weight: bold;
+             animation: titlePulse 2s infinite alternate;
+         }
+ 
+         @keyframes titlePulse {
+             from { text-shadow: 0 0 10px rgba(52, 152, 219, 0.5); }
+             to { text-shadow: 0 0 20px rgba(52, 152, 219, 0.8), 0 0 30px rgba(52, 152, 219, 0.4); }
+         }
+ 
+         .status {
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             margin-bottom: 30px;
+         }
+ 
+         #status-indicator {
+             width: 15px;
+             height: 15px;
+             border-radius: 50%;
+             margin-right: 10px;
+         }
+ 
+         .online {
+             background-color: #3498db;
+             box-shadow: 0 0 10px #3498db;
+             animation: pulseOnline 1.5s infinite alternate;
+         }
+ 
+         @keyframes pulseOnline {
+             from { box-shadow: 0 0 5px #3498db; }
+             to { box-shadow: 0 0 15px #3498db; }
+         }
+ 
+         .offline {
+             background-color: #ff5555;
+             box-shadow: 0 0 10px #ff5555;
+         }
+ 
+         .stats-container {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+             gap: 20px;
+             margin-bottom: 30px;
+         }
+ 
+         .stat-card {
+             background-color: rgba(33, 33, 33, 0.7);
+             padding: 20px;
+             border-radius: 10px;
+             display: flex;
+             align-items: center;
+             transition: all 0.3s;
+             border: 1px solid #444;
+             cursor: pointer;
+             overflow: hidden;
+             position: relative;
+         }
+ 
+         .stat-card::before {
+             content: '';
+             position: absolute;
+             top: -50%;
+             left: -50%;
+             width: 200%;
+             height: 200%;
+             background: rgba(255, 255, 255, 0.1);
+             transform: rotate(45deg);
+             transition: all 0.4s;
+             opacity: 0;
+         }
+ 
+         .stat-card:hover {
+             transform: translateY(-5px);
+             background-color: rgba(44, 44, 44, 0.8);
+             border-color: #3498db;
+             box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+         }
+ 
+         .stat-card:hover::before {
+             left: 100%;
+             opacity: 0.5;
+         }
+ 
+         .stat-card i {
+             font-size: 30px;
+             margin-right: 15px;
+             color: #3498db;
+             transition: transform 0.3s;
+         }
+ 
+         .stat-card:hover i {
+             transform: scale(1.2);
+         }
+ 
+         .stat-info h3 {
+             margin-bottom: 5px;
+             font-size: 16px;
+             color: #aaaaaa;
+         }
+ 
+         .stat-info p {
+             font-size: 18px;
+             font-weight: bold;
+         }
+ 
+         .player-list {
+             font-size: 14px !important;
+             font-weight: normal !important;
+             color: #bbbbbb;
+             max-height: 50px;
+             overflow-y: auto;
+         }
+ 
+         .server-address {
+             text-align: center;
+             margin-top: 30px;
+             padding: 20px;
+             background-color: rgba(33, 33, 33, 0.5);
+             border-radius: 10px;
+             position: relative;
+             overflow: hidden;
+         }
+ 
+         .server-address::before {
+             content: '';
+             position: absolute;
+             top: 0;
+             left: -150%;
+             width: 100%;
+             height: 100%;
+             background: linear-gradient(to right, transparent, rgba(52, 152, 219, 0.2), transparent);
+             animation: shine 3s infinite;
+         }
+ 
+         @keyframes shine {
+             0% { left: -150%; }
+             100% { left: 150%; }
+         }
+ 
+         .address-box {
+             background-color: rgba(33, 33, 33, 0.7);
+             display: inline-flex;
+             align-items: center;
+             padding: 10px 20px;
+             border-radius: 5px;
+             border: 1px solid #3498db;
+             margin-top: 10px;
+             transition: all 0.3s;
+         }
+ 
+         .address-box:hover {
+             transform: scale(1.05);
+             box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+         }
+ 
+         #server-ip {
+             font-family: monospace;
+             font-size: 18px;
+             margin-right: 10px;
+         }
+ 
+         #copy-ip {
+             background: none;
+             border: none;
+             color: #aaaaaa;
+             cursor: pointer;
+             transition: color 0.3s;
+         }
+ 
+         #copy-ip:hover {
+             color: #3498db;
+             transform: scale(1.2);
+         }
+ 
+         /* New styles for the info icon and tooltip */
+         /* Styles for the info icon and tooltip */
+         .info-icon {
+             position: relative;
+             display: inline-block;
+             margin-left: 10px;
+             margin-right: 10px; /* Add spacing between the icon and the server IP */
+             cursor: pointer;
+         }
+ 
+         .info-icon i {
+             color: #3498db;
+             font-size: 18px;
+             transition: color 0.3s;
+         }
+ 
+         .info-icon:hover i {
+             color: #ffffff;
+         }
+ 
+         .tooltip {
+             visibility: hidden;
+             width: 200px;
+             background-color: rgba(0, 0, 0, 0.9);
+             color: #fff;
+             text-align: center;
+             padding: 8px;
+             border-radius: 5px;
+             position: absolute;
+             z-index: 1;
+             bottom: 125%; /* Position above the icon */
+             left: 50%;
+             transform: translateX(-50%);
+             opacity: 0;
+             transition: opacity 0.3s;
+             font-size: 14px;
+             border: 1px solid #3498db;
+         }
+ 
+         .info-icon:hover .tooltip {
+             visibility: visible;
+             opacity: 1;
+         }
+ 
+         .discord-btn {
+             display: inline-block;
+             background-color: #5865F2;
+             color: white;
+             padding: 10px 20px;
+             border-radius: 5px;
+             margin-top: 20px;
+             text-decoration: none;
+             transition: all 0.3s;
+             font-weight: bold;
+             border: none;
+             cursor: pointer;
+         }
+ 
+         .discord-btn:hover {
+             transform: translateY(-3px);
+             box-shadow: 0 5px 15px rgba(88, 101, 242, 0.5);
+         }
+ 
+         .discord-btn i {
+             margin-right: 8px;
+         }
+ 
+         footer {
+             text-align: center;
+             padding: 20px;
+             font-size: 12px;
+             color: #aaaaaa;
+             border-top: 1px solid #444;
+         }
+ 
+         /* Responsive design */
+         @media (max-width: 768px) {
+             .stats-container {
+                 grid-template-columns: 1fr;
+             }
+ 
+             .container {
+                 width: 95%;
+                 margin: 20px 0;
+             }
+ 
+             body {
+                 align-items: flex-start;
+                 padding: 20px 0;
+             }
+         }
+     </style>
+ </head>
+ <body>
+     <div class="container">
+         <div class="news-banner">
+             <marquee behavior="scroll" direction="left" scrollamount="5">
+                 <i class="fas fa-bullhorn"></i> Welcome to my Minecraft Server! Join our Discord down below! <i class="fas fa-gamepad"></i> Server up (essentially 24/7)! <i class="fas fa-gem"></i> Uhhh idk
+             </marquee>
+         </div>
+ 
+         <div class="server-info">
+             <h1>1.20.1 (Modded) MC Server</h1>
+             <div class="status">
+                 <div id="status-indicator" class="offline"></div>
+                 <span id="status-text">Checking status...</span>
+             </div>
+ 
+             <div class="stats-container">
+                 <div class="stat-card">
+                     <i class="fas fa-users"></i>
+                     <div class="stat-info">
+                         <h3>Players Online</h3>
+                         <p id="players-online">0</p>
+                         <p id="player-list" class="player-list"></p>
+                     </div>
+                 </div>
+ 
+                 <div class="stat-card">
+                     <i class="fas fa-server"></i>
+                     <div class="stat-info">
+                         <h3>Server Version</h3>
+                         <p id="server-version">Loading...</p>
+                     </div>
+                 </div>
+ 
+                 <div class="stat-card">
+                     <i class="fas fa-clock"></i>
+                     <div class="stat-info">
+                         <h3>Uptime</h3>
+                         <p id="uptime">Loading...</p>
+                     </div>
+                 </div>
+ 
+                 <div class="stat-card">
+                     <i class="fas fa-wifi"></i>
+                     <div class="stat-info">
+                         <h3>MOTD</h3>
+                         <p id="motd">Loading...</p>
+                     </div>
+                 </div>
+             </div>
+ 
+             <div class="server-address">
+                 <h3>Server Address</h3>
+                 <div style="display: inline-flex; align-items: center;">
+                     <!-- Moved info-icon to the left of address-box -->
+                     <div class="info-icon">
+                         <i class="fas fa-info-circle"></i>
+                         <span class="tooltip">You must be whitelisted to join the server.</span>
+                     </div>
+                     <div class="address-box">
+                         <p id="server-ip">mc.r67u.com</p>
+                         <button id="copy-ip" onclick="copyIP()">
+                             <i class="fas fa-copy"></i>
+                         </button>
+                     </div>
+                     <!-- Added info icon with tooltip -->
+                 </div>
+                 
+                 <a href="https://discord.gg/BnTKpSNq" target="_blank" class="discord-btn">
+                     <i class="fab fa-discord"></i> Join our Discord
+                 </a>
+             </div>
+             
+             <footer>
+                 <p>© 2025 r67u Minecraft Server • Updated <span id="last-updated"></span></p>
+             </footer>
+         </div>
+     </div>
+     
+     <script>
+         // Server address - change this to your own server
+         const SERVER_ADDRESS = 'mc.r67u.com';
+         const SERVER_PORT = 25565; // Default Minecraft port, change if needed
+ 
+         // API URL for Minecraft server status (using mcapi.us service)
+         const API_URL = `https://mcapi.us/server/status?ip=${SERVER_ADDRESS}&port=${SERVER_PORT}`;
+ 
+         // Elements
+         const statusIndicator = document.getElementById('status-indicator');
+         const statusText = document.getElementById('status-text');
+         const playersOnline = document.getElementById('players-online');
+         const playerList = document.getElementById('player-list');
+         const serverVersion = document.getElementById('server-version');
+         const uptime = document.getElementById('uptime');
+         const motd = document.getElementById('motd');
+         const lastUpdated = document.getElementById('last-updated');
+ 
+         // Update the last updated date
+         const updateLastUpdated = () => {
+             const now = new Date();
+             lastUpdated.textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+         };
+ 
+         // Function to fetch server stats
+         async function fetchServerStats() {
+             try {
+                 const response = await fetch(API_URL);
+                 const data = await response.json();
+                 
+                 // Update server status
+                 if (data.online) {
+                     statusIndicator.className = 'online';
+                     statusText.textContent = 'Online';
+                     
+                     // Update players
+                     const playerCount = data.players.now;
+                     playersOnline.textContent = `${playerCount} / ${data.players.max}`;
+                     
+                     // Update player list if available
+                     if (data.players.sample && data.players.sample.length > 0) {
+                         const playerNames = data.players.sample.map(player => player.name).join(', ');
+                         playerList.textContent = `Online: ${playerNames}`;
+                     } else {
+                         playerList.textContent = playerCount > 0 ? 'Players online' : 'No players online';
+                     }
+                     
+                     // Update server version
+                     serverVersion.textContent = data.server.name;
+                     
+                     // Update MOTD (Message of the Day)
+                     if (data.motd) {
+                         motd.textContent = data.motd.replace(/§[0-9a-fk-or]/g, ''); // Remove Minecraft color codes
+                     }
+                     
+                     // Calculate and display uptime (This is not provided by the API, so it's just a placeholder)
+                     // For actual uptime, you would need your own backend service
+                     const now = new Date();
+                     const hours = now.getHours().toString().padStart(2, '0');
+                     const minutes = now.getMinutes().toString().padStart(2, '0');
+                     uptime.textContent = `Last checked: ${hours}:${minutes}`;
+ 
+                     // Update the last updated timestamp
+                     updateLastUpdated();
+                 } else {
+                     setOfflineStatus();
+                 }
+             } catch (error) {
+                 console.error('Error fetching server stats:', error);
+                 setOfflineStatus();
+             }
+         }
+ 
+         // Set offline status
+         function setOfflineStatus() {
+             statusIndicator.className = 'offline';
+             statusText.textContent = 'Offline';
+             playersOnline.textContent = '0 / 0';
+             playerList.textContent = 'Server is offline';
+             serverVersion.textContent = 'N/A';
+             uptime.textContent = 'N/A';
+             motd.textContent = 'Server is currently offline';
+             
+             // Update the last updated timestamp
+             updateLastUpdated();
+         }
+ 
+         // Function to copy server IP to clipboard
+         function copyIP() {
+             const serverIP = document.getElement of the server IP address (`mc.r67u.com`) while keeping everything centered. We'll adjust the HTML structure in the `server-address` section to reorder the elements and ensure proper alignment.
+ 
+ ### Changes Overview
+ 1. **HTML Adjustment**: We'll move the `info-icon` div to be before the `address-box` div within the `inline-flex` container.
+ 2. **CSS Adjustment**: We'll add a small margin to the right of the info icon to create a natural spacing between the icon and the server IP address box, ensuring the centered layout is maintained.
+ 
+ Here’s the updated code with the info icon positioned to the left of the server IP:
+ 
+ ### Updated Code
+ ```html
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>the r67u website</title>
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+     <style>
+         * {
+             margin: 0;
+             padding: 0;
+             box-sizing: border-box;
+             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+         }
+ 
+         body {
+             background-color: #1e272e;
+             background-size: cover;
+             background-position: center;
+             background-attachment: fixed;
+             height: 100vh;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             color: white;
+         }
+ 
+         .container {
+             width: 90%;
+             max-width: 1000px;
+             background-color: rgba(0, 0, 0, 0.8);
+             border-radius: 15px;
+             overflow: hidden;
+             box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+             backdrop-filter: blur(5px);
+             border: 3px solid #3498db;
+             animation: borderGlow 3s infinite alternate;
+         }
+ 
+         @keyframes borderGlow {
+             from { box-shadow: 0 0 10px #3498db; }
+             to { box-shadow: 0 0 25px #3498db; }
+         }
+ 
+         .news-banner {
+             background-color: rgba(52, 152, 219, 0.3);
+             padding: 10px 0;
+             border-bottom: 2px solid #3498db;
+             height: 40px;
+             display: flex;
+             align-items: center;
+         }
+ 
+         .news-banner marquee {
+             width: 100%;
+             white-space: nowrap;
+             color: white;
+             font-size: 16px;
+         }
+ 
+         .server-info {
+             padding: 30px;
+         }
+ 
+         h1 {
+             text-align: center;
+             margin-bottom: 20px;
+             color: #3498db;
+             text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+             font-size: 2.5em;
+             font-weight: bold;
+             animation: titlePulse 2s infinite alternate;
+         }
+ 
+         @keyframes titlePulse {
+             from { text-shadow: 0 0 10px rgba(52, 152, 219, 0.5); }
+             to { text-shadow: 0 0 20px rgba(52, 152, 219, 0.8), 0 0 30px rgba(52, 152, 219, 0.4); }
+         }
+ 
+         .status {
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             margin-bottom: 30px;
+         }
+ 
+         #status-indicator {
+             width: 15px;
+             height: 15px;
+             border-radius: 50%;
+             margin-right: 10px;
+         }
+ 
+         .online {
+             background-color: #3498db;
+             box-shadow: 0 0 10px #3498db;
+             animation: pulseOnline 1.5s infinite alternate;
+         }
+ 
+         @keyframes pulseOnline {
+             from { box-shadow: 0 0 5px #3498db; }
+             to { box-shadow: 0 0 15px #3498db; }
+         }
+ 
+         .offline {
+             background-color: #ff5555;
+             box-shadow: 0 0 10px #ff5555;
+         }
+ 
+         .stats-container {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+             gap: 20px;
+             margin-bottom: 30px;
+         }
+ 
+         .stat-card {
+             background-color: rgba(33, 33, 33, 0.7);
+             padding: 20px;
+             border-radius: 10px;
+             display: flex;
+             align-items: center;
+             transition: all 0.3s;
+             border: 1px solid #444;
+             cursor: pointer;
+             overflow: hidden;
+             position: relative;
+         }
+ 
+         .stat-card::before {
+             content: '';
+             position: absolute;
+             top: -50%;
+             left: -50%;
+             width: 200%;
+             height: 200%;
+             background: rgba(255, 255, 255, 0.1);
+             transform: rotate(45deg);
+             transition: all 0.4s;
+             opacity: 0;
+         }
+ 
+         .stat-card:hover {
+             transform: translateY(-5px);
+             background-color: rgba(44, 44, 44, 0.8);
+             border-color: #3498db;
+             box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+         }
+ 
+         .stat-card:hover::before {
+             left: 100%;
+             opacity: 0.5;
+         }
+ 
+         .stat-card i {
+             font-size: 30px;
+             margin-right: 15px;
+             color: #3498db;
+             transition: transform 0.3s;
+         }
+ 
+         .stat-card:hover i {
+             transform: scale(1.2);
+         }
+ 
+         .stat-info h3 {
+             margin-bottom: 5px;
+             font-size: 16px;
+             color: #aaaaaa;
+         }
+ 
+         .stat-info p {
+             font-size: 18px;
+             font-weight: bold;
+         }
+ 
+         .player-list {
+             font-size: 14px !important;
+             font-weight: normal !important;
+             color: #bbbbbb;
+             max-height: 50px;
+             overflow-y: auto;
+         }
+ 
+         .server-address {
+             text-align: center;
+             margin-top: 30px;
+             padding: 20px;
+             background-color: rgba(33, 33, 33, 0.5);
+             border-radius: 10px;
+             position: relative;
+             overflow: hidden;
+         }
+ 
+         .server-address::before {
+             content: '';
+             position: absolute;
+             top: 0;
+             left: -150%;
+             width: 100%;
+             height: 100%;
+             background: linear-gradient(to right, transparent, rgba(52, 152, 219, 0.2), transparent);
+             animation: shine 3s infinite;
+         }
+ 
+         @keyframes shine {
+             0% { left: -150%; }
+             100% { left: 150%; }
+         }
+ 
+         .address-box {
+             background-color: rgba(33, 33, 33, 0.7);
+             display: inline-flex;
+             align-items: center;
+             padding: 10px 20px;
+             border-radius: 5px;
+             border: 1px solid #3498db;
+             margin-top: 10px;
+             transition: all 0.3s;
+         }
+ 
+         .address-box:hover {
+             transform: scale(1.05);
+             box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+         }
+ 
+         #server-ip {
+             font-family: monospace;
+             font-size: 18px;
+             margin-right: 10px;
+         }
+ 
+         #copy-ip {
+             background: none;
+             border: none;
+             color: #aaaaaa;
+             cursor: pointer;
+             transition: color 0.3s;
+         }
+ 
+         #copy-ip:hover {
+             color: #3498db;
+             transform: scale(1.2);
+         }
+ 
+         /* Styles for the info icon and tooltip */
+         .info-icon {
+             position: relative;
+             display: inline-block;
+             margin-right: 10px; /* Add spacing between the icon and the server IP */
+             cursor: pointer;
+         }
+ 
+         .info-icon i {
+             color: #3498db;
+             font-size: 18px;
+             transition: color 0.3s;
+         }
+ 
+         .info-icon:hover i {
+             color: #ffffff;
+         }
+ 
+         .tooltip {
+             visibility: hidden;
+             width: 200px;
+             background-color: rgba(0, 0, 0, 0.9);
+             color: #fff;
+             text-align: center;
+             padding: 8px;
+             border-radius: 5px;
+             position: absolute;
+             z-index: 1;
+             bottom: 125%; /* Position above the icon */
+             left: 50%;
+             transform: translateX(-50%);
+             opacity: 0;
+             transition: opacity 0.3s;
+             font-size: 14px;
+             border: 1px solid #3498db;
+         }
+ 
+         .info-icon:hover .tooltip {
+             visibility: visible;
+             opacity: 1;
+         }
+ 
+         .discord-btn {
+             display: inline-block;
+             background-color: #5865F2;
+             color: white;
+             padding: 10px 20px;
+             border-radius: 5px;
+             margin-top: 20px;
+             text-decoration: none;
+             transition: all 0.3s;
+             font-weight: bold;
+             border: none;
+             cursor: pointer;
+         }
+ 
+         .discord-btn:hover {
+             transform: translateY(-3px);
+             box-shadow: 0 5px 15px rgba(88, 101, 242, 0.5);
+         }
+ 
+         .discord-btn i {
+             margin-right: 8px;
+         }
+ 
+         footer {
+             text-align: center;
+             padding: 20px;
+             font-size: 12px;
+             color: #aaaaaa;
+             border-top: 1px solid #444;
+         }
+ 
+         /* Responsive design */
+         @media (max-width: 768px) {
+             .stats-container {
+                 grid-template-columns: 1fr;
+             }
+             
+             .container {
+                 width: 95%;
+                 margin: 20px 0;
+             }
+             
+             body {
+                 align-items: flex-start;
+                 padding: 20px 0;
+             }
+         }
+     </style>
+ </head>
+ <body>
+     <div class="container">
+         <div class="news-banner">
+             <marquee behavior="scroll" direction="left" scrollamount="5">
+                 <i class="fas fa-bullhorn"></i> Welcome to my Minecraft Server! Join our Discord down below! <i class="fas fa-gamepad"></i> Server up (essentially 24/7)! <i class="fas fa-gem"></i> Uhhh idk
+             </marquee>
+         </div>
+         
+         <div class="server-info">
+             <h1>1.20.1 (Modded) MC Server</h1>
+             <div class="status">
+                 <div id="status-indicator" class="offline"></div>
+                 <span id="status-text">Checking status...</span>
+             </div>
+             
+             <div class="stats-container">
+                 <div class="stat-card">
+                     <i class="fas fa-users"></i>
+                     <div class="stat-info">
+                         <h3>Players Online</h3>
+                         <p id="players-online">0</p>
+                         <p id="player-list" class="player-list"></p>
+                     </div>
+                 </div>
+                 
+                 <div class="stat-card">
+                     <i class="fas fa-server"></i>
+                     <div class="stat-info">
+                         <h3>Server Version</h3>
+                         <p id="server-version">Loading...</p>
+                     </div>
+                 </div>
+                 
+                 <div class="stat-card">
+                     <i class="fas fa-clock"></i>
+                     <div class="stat-info">
+                         <h3>Uptime</h3>
+                         <p id="uptime">Loading...</p>
+                     </div>
+                 </div>
+                 
+                 <div class="stat-card">
+                     <i class="fas fa-wifi"></i>
+                     <div class="stat-info">
+                         <h3>MOTD</h3>
+                         <p id="motd">Loading...</p>
+                     </div>
+                 </div>
+             </div>
+             
+             <div class="server-address">
+                 <h3>Server Address</h3>
+                 <div style="display: inline-flex; align-items: center;">
+                     <!-- Moved info-icon to the left of address-box -->
+                     <div class="info-icon">
+                         <i class="fas fa-info-circle"></i>
+                         <span class="tooltip">You must be whitelisted to join the server.</span>
+                     </div>
+                     <div class="address-box">
+                         <p id="server-ip">mc.r67u.com</p>
+                         <button id="copy-ip" onclick="copyIP()">
+                             <i class="fas fa-copy"></i>
+                         </button>
+                     </div>
+                 </div>
+                 
+                 <a href="https://discord.gg/BnTKpSNq" target="_blank" class="discord-btn">
+                     <i class="fab fa-discord"></i> Join our Discord
+                 </a>
+             </div>
+             
+             <footer>
+                 <p>© 2025 r67u Minecraft Server • Updated <span id="last-updated"></span></p>
+             </footer>
+         </div>
+     </div>
+     
+     <script>
+         // Server address - change this to your own server
+         const SERVER_ADDRESS = 'mc.r67u.com';
+         const SERVER_PORT = 25565; // Default Minecraft port, change if needed
+ 
+         // API URL for Minecraft server status (using mcapi.us service)
+         const API_URL = `https://mcapi.us/server/status?ip=${SERVER_ADDRESS}&port=${SERVER_PORT}`;
+ 
+         // Elements
+         const statusIndicator = document.getElementById('status-indicator');
+         const statusText = document.getElementById('status-text');
+         const playersOnline = document.getElementById('players-online');
+         const playerList = document.getElementById('player-list');
+         const serverVersion = document.getElementById('server-version');
+         const uptime = document.getElementById('uptime');
+         const motd = document.getElementById('motd');
+         const lastUpdated = document.getElementById('last-updated');
+ 
+         // Update the last updated date
+         const updateLastUpdated = () => {
+             const now = new Date();
+             lastUpdated.textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+         };
+ 
+         // Function to fetch server stats
+         async function fetchServerStats() {
+             try {
+                 const response = await fetch(API_URL);
+                 const data = await response.json();
+                 
+                 // Update server status
+                 if (data.online) {
+                     statusIndicator.className = 'online';
+                     statusText.textContent = 'Online';
+                     
+                     // Update players
+                     const playerCount = data.players.now;
+                     playersOnline.textContent = `${playerCount} / ${data.players.max}`;
+                     
+                     // Update player list if available
+                     if (data.players.sample && data.players.sample.length > 0) {
+                         const playerNames = data.players.sample.map(player => player.name).join(', ');
+                         playerList.textContent = `Online: ${playerNames}`;
+                     } else {
+                         playerList.textContent = playerCount > 0 ? 'Players online' : 'No players online';
+                     }
+                     
+                     // Update server version
+                     serverVersion.textContent = data.server.name;
+                     
+                     // Update MOTD (Message of the Day)
+                     if (data.motd) {
+                         motd.textContent = data.motd.replace(/§[0-9a-fk-or]/g, ''); // Remove Minecraft color codes
+                     }
+                     
+                     // Calculate and display uptime (This is not provided by the API, so it's just a placeholder)
+                     // For actual uptime, you would need your own backend service
+                     const now = new Date();
+                     const hours = now.getHours().toString().padStart(2, '0');
+                     const minutes = now.getMinutes().toString().padStart(2, '0');
+                     uptime.textContent = `Last checked: ${hours}:${minutes}`;
+ 
+                     // Update the last updated timestamp
+                     updateLastUpdated();
+                 } else {
+                     setOfflineStatus();
+                 }
+             } catch (error) {
+                 console.error('Error fetching server stats:', error);
+                 setOfflineStatus();
+             }
+         }
+ 
+         // Set offline status
+         function setOfflineStatus() {
+             statusIndicator.className = 'offline';
+             statusText.textContent = 'Offline';
+             playersOnline.textContent = '0 / 0';
+             playerList.textContent = 'Server is offline';
+             serverVersion.textContent = 'N/A';
+             uptime.textContent = 'N/A';
+             motd.textContent = 'Server is currently offline';
+ 
+             // Update the last updated timestamp
+             updateLastUpdated();
+         }
+ 
+         // Function to copy server IP to clipboard
+         function copyIP() {
+             const serverIP = document.getElementById('server-ip').textContent;
+ 
+             navigator.clipboard.writeText(serverIP)
+                 .then(() => {
+                     // Add a temporary "Copied!" message
+                     const copyButton = document.getElementById('copy-ip');
+                     const originalContent = copyButton.innerHTML;
+                     copyButton.innerHTML = '<i class="fas fa-check"></i>';
+ 
+                     setTimeout(() => {
+                         copyButton.innerHTML = originalContent;
+                     }, 2000);
+                 })
+                 .catch(err => {
+                     console.error('Failed to copy IP address:', err);
+                 });
+         }
+ 
+         // Make the copyIP function global so the onclick attribute works
+         window.copyIP = copyIP;
+ 
+         // Animation for the stat cards on hover
+         const statCards = document.querySelectorAll('.stat-card');
+         statCards.forEach(card => {
+             card.addEventListener('mouseover', () => {
+                 card.style.transform = 'translateY(-5px)';
+             });
+ 
+             card.addEventListener('mouseout', () => {
+                 card.style.transform = 'translateY(0)';
+             });
+         });
+ 
+         // Fetch server stats when page loads
+         fetchServerStats();
+ 
+         // Refresh server stats every 5 minutes
+         setInterval(fetchServerStats, 5 * 60 * 1000);
+     </script>
+ </body>
+ </html>
